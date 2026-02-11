@@ -15,13 +15,13 @@
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",
     "@vitejs/plugin-react": "^4.2.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
     "typescript": "^5.2.2",
     "vite": "^5.0.0"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.95.3",
-    "browser-image-compression": "^2.0.2"
+    "browser-image-compression": "^2.0.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   }
 }

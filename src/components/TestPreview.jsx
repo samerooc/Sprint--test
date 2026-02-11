@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { uploadImage } from '../utils/uploadImage'
-import { createTest } from '../utils/database'
+import { uploadImage } from '../Utility/uploadImage'
+import { createTest } from '../Utility/database'
 import './TestPreview.css'
 
 function TestPreview({ testJSON, onPublish, onCancel }) {

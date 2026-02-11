@@ -1,4 +1,4 @@
-import { cloudinaryConfig } from '../config/cloudinary'
+import { cloudinaryConfig } from '../config/Cloudinary'
 import { compressImage, validateImage } from './imageCompression'
 
 export const uploadImage = async (file, folder = 'general') => {

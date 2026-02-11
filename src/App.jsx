@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { testConnection } from './config/supabase'
+import { testConnection } from './config/Supabase'
 import TestPreview from './components/TestPreview'
 import './App.css'
 
