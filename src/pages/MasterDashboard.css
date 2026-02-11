@@ -1,0 +1,221 @@
+.master-dashboard {  
+  background: linear-gradient(135deg, #434343 0%, #000000 100%);  
+}  
+  
+.master-avatar {  
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%) !important;  
+  border: 3px solid gold !important;  
+}  
+  
+/* Master Tabs */  
+.master-tabs {  
+  display: flex;  
+  gap: 1rem;  
+  padding: 1rem 2rem;  
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);  
+  overflow-x: auto;  
+}  
+  
+.master-tab {  
+  padding: 0.75rem 1.5rem;  
+  border: none;  
+  background: transparent;  
+  color: rgba(255, 255, 255, 0.7);  
+  font-weight: 600;  
+  font-size: 0.875rem;  
+  border-radius: 0.5rem;  
+  cursor: pointer;  
+  transition: all 0.3s ease;  
+  white-space: nowrap;  
+  font-family: inherit;  
+}  
+  
+.master-tab:hover {  
+  background: rgba(255, 255, 255, 0.1);  
+  color: white;  
+}  
+  
+.master-tab-active {  
+  background: rgba(255, 255, 255, 0.2);  
+  color: white;  
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);  
+}  
+  
+/* Master Stats */  
+.master-stats {  
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));  
+}  
+  
+/* Overview Grid */  
+.overview-grid {  
+  display: grid;  
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));  
+  gap: 2rem;  
+}  
+  
+.health-metrics {  
+  display: flex;  
+  flex-direction: column;  
+  gap: 1.5rem;  
+}  
+  
+.health-item {  
+  display: flex;  
+  justify-content: space-between;  
+  align-items: center;  
+  padding: 1rem;  
+  background: rgba(0, 0, 0, 0.02);  
+  border-radius: 0.75rem;  
+}  
+  
+.health-label {  
+  font-size: 0.875rem;  
+  color: #718096;  
+  font-weight: 600;  
+}  
+  
+.health-value {  
+  font-size: 1.5rem;  
+  font-weight: 800;  
+  color: #2d3748;  
+}  
+  
+/* Master Table */  
+.master-table {  
+  overflow-x: auto;  
+}  
+  
+.master-table table {  
+  width: 100%;  
+  border-collapse: collapse;  
+}  
+  
+.master-table thead {  
+  background: rgba(0, 0, 0, 0.02);  
+}  
+  
+.master-table th {  
+  padding: 1rem;  
+  text-align: left;  
+  font-size: 0.75rem;  
+  font-weight: 700;  
+  color: #718096;  
+  text-transform: uppercase;  
+  letter-spacing: 0.5px;  
+  border-bottom: 2px solid rgba(0, 0, 0, 0.05);  
+}  
+  
+.master-table td {  
+  padding: 1rem;  
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);  
+  color: #4a5568;  
+  font-size: 0.875rem;  
+}  
+  
+.master-table tbody tr {  
+  transition: all 0.2s ease;  
+}  
+  
+.master-table tbody tr:hover {  
+  background: rgba(102, 126, 234, 0.05);  
+}  
+  
+.table-title {  
+  font-weight: 600;  
+  color: #2d3748;  
+}  
+  
+.table-empty {  
+  padding: 3rem;  
+  text-align: center;  
+  color: #a0aec0;  
+}  
+  
+/* Badges */  
+.status-badge {  
+  padding: 0.25rem 0.75rem;  
+  border-radius: 1rem;  
+  font-size: 0.75rem;  
+  font-weight: 600;  
+  text-transform: uppercase;  
+  letter-spacing: 0.5px;  
+}  
+  
+.status-badge.active {  
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);  
+  color: white;  
+}  
+  
+.status-badge.inactive {  
+  background: rgba(0, 0, 0, 0.1);  
+  color: #718096;  
+}  
+  
+.role-badge {  
+  padding: 0.25rem 0.75rem;  
+  border-radius: 1rem;  
+  font-size: 0.75rem;  
+  font-weight: 600;  
+  text-transform: capitalize;  
+  display: inline-flex;  
+  align-items: center;  
+  gap: 0.25rem;  
+}  
+  
+.role-badge.student {  
+  background: rgba(102, 126, 234, 0.1);  
+  color: #667eea;  
+}  
+  
+.role-badge.admin {  
+  background: rgba(240, 147, 251, 0.1);  
+  color: #f093fb;  
+}  
+  
+.role-badge.master {  
+  background: rgba(255, 215, 0, 0.2);  
+  color: #d4af37;  
+}  
+  
+.score-badge {  
+  padding: 0.25rem 0.75rem;  
+  border-radius: 1rem;  
+  font-size: 0.75rem;  
+  font-weight: 700;  
+}  
+  
+.score-badge.pass {  
+  background: rgba(67, 233, 123, 0.1);  
+  color: #43e97b;  
+}  
+  
+.score-badge.fail {  
+  background: rgba(245, 101, 101, 0.1);  
+  color: #f56565;  
+}  
+  
+.empty-text {  
+  text-align: center;  
+  color: #a0aec0;  
+  padding: 2rem;  
+}  
+  
+/* Responsive */  
+@media (max-width: 768px) {  
+  .master-tabs {  
+    padding: 1rem;  
+  }  
+  
+  .overview-grid {  
+    grid-template-columns: 1fr;  
+  }  
+  
+  .master-table {  
+    font-size: 0.75rem;  
+  }  
+  
+  .master-table th,  
+  .master-table td {  
+    padding: 0.75rem 0.5rem;  
+  }  
+}

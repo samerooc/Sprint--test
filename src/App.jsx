@@ -1,139 +1,119 @@
-import React, { useEffect, useState } from 'react'
-import { testConnection } from './config/Supabase'
-import TestPreview from './components/TestPreview'
-import './App.css'
+import React from 'react'  
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'  
+import { AuthProvider, useAuth } from './contexts/AuthContext'  
+import { Login } from './pages/Login'  
+import { StudentDashboard } from './pages/StudentDashboard'  
+import { AdminDashboard } from './pages/AdminDashboard'  
+import { MasterDashboard } from './pages/MasterDashboard'  
+import { TakeTest } from './pages/TakeTest'  
 
-function App() {
-  const [showPreview, setShowPreview] = useState(false)
-  const [jsonInput, setJsonInput] = useState('')
-  const [connected, setConnected] = useState(false)
+// Protected Route Component  
+const ProtectedRoute = ({ children, allowedRoles }) => {  
+  const { currentUser } = useAuth()  
 
-  useEffect(() => {
-    const checkConnection = async () => {
-      const isConnected = await testConnection()
-      setConnected(isConnected)
-    }
-    checkConnection()
-  }, [])
+  if (!currentUser) {  
+    return <Navigate to="/login" replace />  
+  }  
 
-  const sampleJSON = {
-    testTitle: "Physics - Light & Optics",
-    duration: 60,
-    questions: [
-      {
-        id: 1,
-        question: "What phenomenon is shown in the diagram?",
-        hasQuestionImage: true,
-        questionImageDescription: "Ray diagram showing light refraction",
-        options: {
-          A: "Reflection",
-          B: "Refraction",
-          C: "Diffraction",
-          D: "Dispersion"
-        },
-        correctAnswer: "B",
-        solution: "Light bends when passing between media.",
-        marks: 4
-      },
-      {
-        id: 2,
-        question: "Identify the lens type:",
-        hasQuestionImage: false,
-        options: {
-          A: {
-            text: "Convex lens",
-            hasImage: true,
-            imageDesc: "Convex lens diagram"
-          },
-          B: {
-            text: "Concave lens",
-            hasImage: true,
-            imageDesc: "Concave lens diagram"
-          },
-          C: "Plano-convex",
-          D: "Cylindrical"
-        },
-        correctAnswer: "A",
-        solution: "Convex lenses converge light rays.",
-        marks: 4
-      }
-    ]
-  }
+  if (allowedRoles && !allowedRoles.includes(currentUser.role)) {  
+    // Redirect to appropriate dashboard  
+    if (currentUser.role === 'student') return <Navigate to="/student" replace />  
+    if (currentUser.role === 'admin') return <Navigate to="/admin" replace />  
+    if (currentUser.role === 'master') return <Navigate to="/master" replace />  
+  }  
 
-  const handlePreview = () => {
-    try {
-      const parsed = jsonInput ? JSON.parse(jsonInput) : sampleJSON
-      setShowPreview(true)
-    } catch (error) {
-      alert('Invalid JSON! ' + error.message)
-    }
-  }
+  return children  
+}  
 
-  const handlePublish = (published) => {
-    console.log('Published:', published)
-    setShowPreview(false)
-    setJsonInput('')
-  }
+// Router Component  
+const AppRouter = () => {  
+  const { currentUser } = useAuth()  
 
-  if (showPreview) {
-    const testData = jsonInput ? JSON.parse(jsonInput) : sampleJSON
-    return (
-      <TestPreview
-        testJSON={testData}
-        onPublish={handlePublish}
-        onCancel={() => setShowPreview(false)}
-      />
-    )
-  }
+  return (  
+    <Routes>  
+      {/* Login Route */}  
+      <Route   
+        path="/login"   
+        element={  
+          currentUser ? (  
+            currentUser.role === 'student' ? <Navigate to="/student" replace /> :  
+            currentUser.role === 'admin' ? <Navigate to="/admin" replace /> :  
+            <Navigate to="/master" replace />  
+          ) : (  
+            <Login />  
+          )  
+        }   
+      />  
 
-  return (
-    <div className="App">
-      <div className="container">
-        <div className="header">
-          <h1>🎓 Test Creator</h1>
-          <div className="status">
-            {connected ? (
-              <span className="badge success">✅ Connected</span>
-            ) : (
-              <span className="badge error">❌ Failed</span>
-            )}
-          </div>
-        </div>
+      {/* Student Routes */}  
+      <Route  
+        path="/student"  
+        element={  
+          <ProtectedRoute allowedRoles={['student']}>  
+            <StudentDashboard />  
+          </ProtectedRoute>  
+        }  
+      />  
 
-        <p className="subtitle">Paste JSON or load sample</p>
+      {/* Admin Routes */}  
+      <Route  
+        path="/admin"  
+        element={  
+          <ProtectedRoute allowedRoles={['admin']}>  
+            <AdminDashboard />  
+          </ProtectedRoute>  
+        }  
+      />  
 
-        <textarea
-          value={jsonInput}
-          onChange={(e) => setJsonInput(e.target.value)}
-          placeholder="Paste test JSON here..."
-          rows={12}
-        />
+      {/* Master Routes */}  
+      <Route  
+        path="/master"  
+        element={  
+          <ProtectedRoute allowedRoles={['master']}>  
+            <MasterDashboard />  
+          </ProtectedRoute>  
+        }  
+      />  
 
-        <div className="buttons">
-          <button onClick={handlePreview} className="btn-preview">
-            👁️ Preview Test
-          </button>
-          <button 
-            onClick={() => setJsonInput(JSON.stringify(sampleJSON, null, 2))}
-            className="btn-sample"
-          >
-            📋 Load Sample
-          </button>
-        </div>
+      {/* Test Taking Route (All roles) */}  
+      <Route  
+        path="/test/:testId"  
+        element={  
+          <ProtectedRoute allowedRoles={['student', 'admin']}>  
+            <TakeTest />  
+          </ProtectedRoute>  
+        }  
+      />  
 
-        <div className="info-box">
-          <h3>How to use:</h3>
-          <ol>
-            <li>Get JSON from Claude AI</li>
-            <li>Paste here or load sample</li>
-            <li>Preview test</li>
-            <li>Upload images</li>
-            <li>Publish to database</li>
-          </ol>
-        </div>
-      </div>
-    </div>
-  )
-}
+      {/* Default Route */}  
+      <Route  
+        path="/"  
+        element={  
+          currentUser ? (  
+            currentUser.role === 'student' ? <Navigate to="/student" replace /> :  
+            currentUser.role === 'admin' ? <Navigate to="/admin" replace /> :  
+            <Navigate to="/master" replace />  
+          ) : (  
+            <Navigate to="/login" replace />  
+          )  
+        }  
+      />  
+
+      {/* 404 Route */}  
+      <Route path="*" element={<Navigate to="/" replace />} />  
+    </Routes>  
+  )  
+}  
+
+// Main App Component  
+function App() {  
+  return (  
+    <BrowserRouter>  
+      <AuthProvider>  
+        <AppRouter />  
+      </AuthProvider>  
+    </BrowserRouter>  
+  )  
+}  
 
 export default App
